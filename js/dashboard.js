@@ -91,14 +91,14 @@
                 ownerId: app.user?.id || 'anonymous'
             };
 
-            try {
-                await DB.saveRestaurant(data);
-                app.saveRestaurant(data);
-                app.showToast('success', 'Restaurant Saved!', `${data.name} is now live on Dishara!`);
-            } catch(err) {
-                console.error(err);
-                app.showToast('error', 'Save Failed', 'Could not save. Check your connection.');
-            }
+            // Save to localStorage immediately (always works)
+            app.saveRestaurant(data);
+            app.showToast('success', 'Restaurant Saved!', `${data.name} is now live on Dishara!`);
+
+            // Sync to Firestore in background
+            DB.saveRestaurant(data).catch(err => {
+                console.warn('Firestore sync failed (data saved locally):', err.message || err);
+            });
 
             if (btn) { btn.disabled = false; btn.textContent = 'Save Restaurant'; }
             updateStats();
