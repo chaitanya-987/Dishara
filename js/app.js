@@ -26,29 +26,37 @@ class DisharaApp {
         this.setupCursorGlow();
 
         if (this.isHomePage) {
-            // Load live data from Firestore first, then render
-            Promise.all([
-                DB.getRestaurants().then(r => { AppData.restaurants = r; }).catch(() => {}),
-                DB.getMenuItems().then(m => { AppData.menuItems = m; }).catch(() => {})
-            ]).finally(() => {
-                this.renderCategories();
+            // Render immediately with empty state, then update when Firestore responds
+            this.renderCategories();
+            this.renderFeaturedRestaurants();
+            this.renderPopularDishes();
+            this.renderTestimonials();
+            this.setupCounters();
+            this.setupNewsletter();
+
+            // Load live data from Firestore and re-render
+            DB.getRestaurants().then(r => {
+                AppData.restaurants = r;
                 this.renderFeaturedRestaurants();
-                this.renderPopularDishes();
-                this.renderTestimonials();
                 this.setupCounters();
-                this.setupNewsletter();
-            });
+            }).catch(() => {});
+
+            DB.getMenuItems().then(m => {
+                AppData.menuItems = m;
+                this.renderPopularDishes();
+            }).catch(() => {});
         }
     }
 
     // === Loading Screen ===
     setupLoadingScreen() {
         const loader = document.getElementById('loadingScreen');
-        if (loader) {
-            setTimeout(() => {
-                loader.classList.add('hidden');
-            }, 1500);
-        }
+        if (!loader) return;
+        // Always hide after max 2 seconds regardless of data loading
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            loader.style.display = 'none';
+        }, 1500);
     }
 
     // === Cursor Glow ===

@@ -165,7 +165,8 @@ button, input, select, textarea {
 .loading-screen.hidden {
     opacity: 0;
     visibility: hidden;
-    display: flex !important;
+    display: none !important;
+    pointer-events: none;
 }
 
 .loader {
