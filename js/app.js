@@ -177,6 +177,16 @@ class DisharaApp {
         this.showToast('success', 'Account Created!', 'Welcome to Dishara!');
     }
 
+    goToListRestaurant() {
+        const isSubPage = window.location.pathname.includes('/pages/');
+        const base = isSubPage ? '' : 'pages/';
+        if (this.user) {
+            window.location.href = base + 'dashboard.html';
+        } else {
+            window.location.href = base + 'login.html';
+        }
+    }
+
     // === Cart ===
     addToCart(item) {
         const existing = this.cart.find(i => i.id === item.id);
@@ -315,7 +325,7 @@ class DisharaApp {
                     <div style="font-size:3.5rem; margin-bottom:1rem">🏦</div>
                     <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Restaurants Yet</h3>
                     <p style="color:var(--text-muted)">Be the first to list your restaurant on Dishara!</p>
-                    <a href="pages/register.html" class="btn btn-primary" style="margin-top:1.5rem; display:inline-flex">
+                    <a href="pages/dashboard.html" onclick="event.preventDefault(); app.goToListRestaurant()" class="btn btn-primary" style="margin-top:1.5rem; display:inline-flex">
                         <i class="fas fa-plus"></i> List Your Restaurant
                     </a>
                 </div>`;
