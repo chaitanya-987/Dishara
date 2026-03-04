@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Kitchen — Delicious Food, Delivered Fast</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Particle Canvas Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader">
+            <div class="loader-plate">
+                <div class="loader-food">🍔</div>
+            </div>
+            <div class="loader-steam">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <p class="loader-text">Preparing your experience<span class="dots"></span></p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-cloud"></i>
+                    <i class="fas fa-utensils logo-utensils"></i>
+                </div>
+                <span class="logo-text">Cloud<span class="logo-highlight">Kitchen</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link active" data-tooltip="Home">
+                    <i class="fas fa-home"></i><span>Home</span>
+                </a>
+                <a href="pages/restaurants.html" class="nav-link" data-tooltip="Restaurants">
+                    <i class="fas fa-store"></i><span>Restaurants</span>
+                </a>
+                <a href="pages/menu.html" class="nav-link" data-tooltip="Menu">
+                    <i class="fas fa-book-open"></i><span>Menu</span>
+                </a>
+                <a href="pages/cart.html" class="nav-link cart-link" data-tooltip="Cart">
+                    <i class="fas fa-shopping-cart"></i><span>Cart</span>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+                <a href="pages/dashboard.html" class="nav-link" data-tooltip="Dashboard">
+                    <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="pages/login.html" class="btn-nav-login" id="loginBtn">
+                    <i class="fas fa-user"></i><span>Login</span>
+                </a>
+                <div class="user-menu hidden" id="userMenu">
+                    <div class="user-avatar" id="userAvatar">
+                        <span>U</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <span id="userName">User</span>
+                            <small id="userRole">Customer</small>
+                        </div>
+                        <a href="pages/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="pages/orders.html"><i class="fas fa-receipt"></i> My Orders</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+                <button class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-up">
+                    <i class="fas fa-fire"></i>
+                    <span>#1 Cloud Kitchen Platform</span>
+                </div>
+                <h1 class="hero-title animate-fade-up delay-1">
+                    Delicious Food,
+                    <span class="gradient-text">Delivered</span>
+                    <br>To Your Door
+                    <span class="emoji-float">🍕</span>
+                </h1>
+                <p class="hero-subtitle animate-fade-up delay-2">
+                    Discover 500+ restaurants, order your favorites, and get them delivered in minutes.
+                    Restaurant owners — list your kitchen and reach thousands!
+                </p>
+                <div class="hero-buttons animate-fade-up delay-3">
+                    <a href="pages/restaurants.html" class="btn btn-primary btn-glow">
+                        <i class="fas fa-search"></i>
+                        <span>Explore Restaurants</span>
+                        <div class="btn-shimmer"></div>
+                    </a>
+                    <a href="pages/register.html" class="btn btn-outline btn-magnetic">
+                        <i class="fas fa-store"></i>
+                        <span>List Your Restaurant</span>
+                    </a>
+                </div>
+                <div class="hero-stats animate-fade-up delay-4">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="500">0</div>
+                        <div class="stat-label">Restaurants</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="10000">0</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="50000">0</div>
+                        <div class="stat-label">Orders Delivered</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual animate-fade-left delay-2">
+                <div class="hero-phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <span>🔥 Trending Now</span>
+                        </div>
+                        <div class="phone-food-cards">
+                            <div class="phone-card" style="--delay:0s">
+                                <div class="phone-card-img">🍔</div>
+                                <div class="phone-card-info">
+                                    <h4>Classic Burger</h4>
+                                    <span>$12.99</span>
+                                </div>
+                            </div>
+                            <div class="phone-card" style="--delay:0.2s">
+                                <div class="phone-card-img">🍕</div>
+                                <div class="phone-card-info">
+                                    <h4>Margherita Pizza</h4>
+                                    <span>$14.99</span>
+                                </div>
+                            </div>
+                            <div class="phone-card" style="--delay:0.4s">
+                                <div class="phone-card-img">🍜</div>
+                                <div class="phone-card-info">
+                                    <h4>Spicy Ramen</h4>
+                                    <span>$11.99</span>
+                                </div>
+                            </div>
+                            <div class="phone-card" style="--delay:0.6s">
+                                <div class="phone-card-img">🌮</div>
+                                <div class="phone-card-info">
+                                    <h4>Tacos Supreme</h4>
+                                    <span>$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-elements">
+                    <div class="float-item float-1">🍔</div>
+                    <div class="float-item float-2">🍕</div>
+                    <div class="float-item float-3">🌮</div>
+                    <div class="float-item float-4">🍰</div>
+                    <div class="float-item float-5">🍣</div>
+                    <div class="float-item float-6">☕</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,60 1440,60 L1440,120 L0,120 Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Category Section -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge animate-fade-up">🍽️ Categories</span>
+                <h2 class="section-title animate-fade-up delay-1">What Are You <span class="gradient-text">Craving</span>?</h2>
+                <p class="section-subtitle animate-fade-up delay-2">Browse through our diverse categories</p>
+            </div>
+            <div class="category-grid" id="categoryGrid">
+                <!-- Categories injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Restaurants -->
+    <section class="featured" id="featured">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge animate-fade-up">⭐ Featured</span>
+                <h2 class="section-title animate-fade-up delay-1">Top <span class="gradient-text">Restaurants</span></h2>
+                <p class="section-subtitle animate-fade-up delay-2">Handpicked restaurants loved by thousands</p>
+            </div>
+            <div class="restaurant-grid" id="restaurantGrid">
+                <!-- Restaurants injected by JS -->
+            </div>
+            <div class="section-cta animate-fade-up">
+                <a href="pages/restaurants.html" class="btn btn-primary btn-glow">
+                    View All Restaurants <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Dishes -->
+    <section class="popular-dishes" id="popularDishes">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge animate-fade-up">🔥 Trending</span>
+                <h2 class="section-title animate-fade-up delay-1">Popular <span class="gradient-text">Dishes</span></h2>
+                <p class="section-subtitle animate-fade-up delay-2">Most ordered dishes this week</p>
+            </div>
+            <div class="dishes-carousel" id="dishesCarousel">
+                <!-- Dishes injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="howItWorks">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge animate-fade-up">🚀 Simple</span>
+                <h2 class="section-title animate-fade-up delay-1">How It <span class="gradient-text">Works</span></h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card animate-fade-up delay-1">
+                    <div class="step-number">01</div>
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <h3>Browse</h3>
+                    <p>Explore hundreds of restaurants and cuisines near you</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card animate-fade-up delay-2">
+                    <div class="step-number">02</div>
+                    <div class="step-icon"><i class="fas fa-hand-pointer"></i></div>
+                    <h3>Order</h3>
+                    <p>Pick your favorite dishes and add them to cart</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card animate-fade-up delay-3">
+                    <div class="step-number">03</div>
+                    <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                    <h3>Pay</h3>
+                    <p>Secure checkout with multiple payment options</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card animate-fade-up delay-4">
+                    <div class="step-number">04</div>
+                    <div class="step-icon"><i class="fas fa-truck"></i></div>
+                    <h3>Enjoy</h3>
+                    <p>Get your food delivered hot and fresh to your door</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Restaurant Owners CTA -->
+    <section class="owner-cta" id="ownerCta">
+        <div class="container">
+            <div class="owner-cta-card">
+                <div class="owner-cta-content">
+                    <span class="section-badge">👨‍🍳 For Restaurant Owners</span>
+                    <h2>Grow Your Business With <span class="gradient-text">Cloud Kitchen</span></h2>
+                    <p>Join 500+ restaurants already thriving on our platform. List your restaurant, manage orders, and reach thousands of new customers.</p>
+                    <div class="owner-features">
+                        <div class="owner-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Zero commission for first month</span>
+                        </div>
+                        <div class="owner-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Real-time order management</span>
+                        </div>
+                        <div class="owner-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Analytics & insights dashboard</span>
+                        </div>
+                        <div class="owner-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 dedicated support</span>
+                        </div>
+                    </div>
+                    <a href="pages/register.html" class="btn btn-primary btn-glow btn-lg">
+                        <i class="fas fa-rocket"></i> Start Selling Today
+                    </a>
+                </div>
+                <div class="owner-cta-visual">
+                    <div class="dashboard-preview">
+                        <div class="preview-header">
+                            <div class="preview-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span>Restaurant Dashboard</span>
+                        </div>
+                        <div class="preview-body">
+                            <div class="preview-stat-row">
+                                <div class="preview-stat">
+                                    <i class="fas fa-receipt"></i>
+                                    <span>156 Orders</span>
+                                </div>
+                                <div class="preview-stat">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>$4,320 Revenue</span>
+                                </div>
+                            </div>
+                            <div class="preview-chart">
+                                <div class="chart-bar" style="--height:40%"></div>
+                                <div class="chart-bar" style="--height:65%"></div>
+                                <div class="chart-bar" style="--height:55%"></div>
+                                <div class="chart-bar" style="--height:80%"></div>
+                                <div class="chart-bar" style="--height:70%"></div>
+                                <div class="chart-bar" style="--height:90%"></div>
+                                <div class="chart-bar" style="--height:75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge animate-fade-up">💬 Reviews</span>
+                <h2 class="section-title animate-fade-up delay-1">What People <span class="gradient-text">Say</span></h2>
+            </div>
+            <div class="testimonial-grid" id="testimonialGrid">
+                <!-- Testimonials injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="newsletter-content">
+                    <h2>Get <span class="gradient-text">Exclusive</span> Offers</h2>
+                    <p>Subscribe and get 20% off on your first order!</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit" class="btn btn-primary">
+                                Subscribe <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,0 720,120 1080,60 C1260,30 1380,60 1440,60 L1440,0 L0,0 Z"></path>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-cloud"></i>
+                            <i class="fas fa-utensils logo-utensils"></i>
+                        </div>
+                        <span class="logo-text">Cloud<span class="logo-highlight">Kitchen</span></span>
+                    </a>
+                    <p>The ultimate cloud kitchen platform connecting food lovers with the best restaurants.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="pages/restaurants.html">Restaurants</a>
+                    <a href="pages/menu.html">Menu</a>
+                    <a href="pages/cart.html">Cart</a>
+                    <a href="pages/dashboard.html">Dashboard</a>
+                </div>
+                <div class="footer-links">
+                    <h4>For Owners</h4>
+                    <a href="pages/register.html">Register Restaurant</a>
+                    <a href="pages/dashboard.html">Manage Orders</a>
+                    <a href="#">Pricing Plans</a>
+                    <a href="#">Support</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> 123 Food Street</a>
+                    <a href="#"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
+                    <a href="#"><i class="fas fa-envelope"></i> hello@cloudkitchen.com</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Cloud Kitchen. All rights reserved. Made with ❤️</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

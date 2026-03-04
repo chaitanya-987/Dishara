@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart — Cloud Kitchen</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon"><i class="fas fa-cloud"></i><i class="fas fa-utensils logo-utensils"></i></div>
+                <span class="logo-text">Cloud<span class="logo-highlight">Kitchen</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="restaurants.html" class="nav-link"><i class="fas fa-store"></i><span>Restaurants</span></a>
+                <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
+                <a href="cart.html" class="nav-link active cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="login.html" class="btn-nav-login" id="loginBtn"><i class="fas fa-user"></i><span>Login</span></a>
+                <div class="user-menu hidden" id="userMenu">
+                    <div class="user-avatar" id="userAvatar"><span>U</span></div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header"><span id="userName">User</span><small id="userRole">Customer</small></div>
+                        <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1 class="page-title animate-fade-up">Your <span class="gradient-text">Cart</span></h1>
+            <p class="page-subtitle animate-fade-up delay-1">Review your order before checkout</p>
+        </div>
+    </section>
+
+    <section class="cart-page">
+        <div class="container">
+            <div class="cart-layout">
+                <!-- Cart Items -->
+                <div class="cart-items-section">
+                    <div class="cart-items" id="cartItems">
+                        <!-- Injected by JS -->
+                    </div>
+                    <div class="empty-cart hidden" id="emptyCart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added anything yet</p>
+                        <a href="menu.html" class="btn btn-primary btn-glow">
+                            <i class="fas fa-utensils"></i> Browse Menu
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary glass-card" id="orderSummary">
+                    <h3 class="summary-title"><i class="fas fa-receipt"></i> Order Summary</h3>
+                    <div class="summary-items" id="summaryItems"></div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee</span>
+                        <span id="deliveryFee">$2.99</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (8%)</span>
+                        <span id="taxAmount">$0.00</span>
+                    </div>
+                    <div class="summary-row discount hidden" id="discountRow">
+                        <span>Discount</span>
+                        <span id="discountAmount">-$0.00</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="totalAmount">$0.00</span>
+                    </div>
+
+                    <div class="promo-section">
+                        <div class="promo-input-group">
+                            <input type="text" id="promoCode" placeholder="Promo code">
+                            <button class="btn btn-sm" id="applyPromo">Apply</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-glow btn-block" id="checkoutBtn">
+                        <i class="fas fa-lock"></i> Proceed to Checkout
+                    </button>
+
+                    <!-- Checkout Form (Hidden by default) -->
+                    <div class="checkout-form hidden" id="checkoutForm">
+                        <h4>Delivery Details</h4>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="checkoutName" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea id="checkoutAddress" placeholder="123 Food Street, City" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="checkoutPhone" placeholder="+1 (555) 123-4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <div class="payment-options">
+                                <label class="payment-option">
+                                    <input type="radio" name="payment" value="card" checked>
+                                    <span class="payment-label"><i class="fas fa-credit-card"></i> Card</span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment" value="cash">
+                                    <span class="payment-label"><i class="fas fa-money-bill"></i> Cash</span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment" value="upi">
+                                    <span class="payment-label"><i class="fas fa-mobile-alt"></i> UPI</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-glow btn-block" id="placeOrderBtn">
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Success Modal -->
+    <div class="modal hidden" id="orderSuccessModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content success-modal">
+            <div class="success-animation">
+                <div class="success-checkmark">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <h2>Order Placed! 🎉</h2>
+            <p>Your order has been placed successfully</p>
+            <div class="order-tracking">
+                <div class="tracking-id">Order #<span id="orderId">CK-000000</span></div>
+                <div class="tracking-eta">
+                    <i class="fas fa-clock"></i> Estimated delivery: <strong>25-35 mins</strong>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <a href="orders.html" class="btn btn-primary">Track Order</a>
+                <a href="menu.html" class="btn btn-outline">Order More</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container"><div class="footer-bottom"><p>&copy; 2026 Cloud Kitchen. All rights reserved. Made with ❤️</p></div></div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/particles.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html>
