@@ -270,11 +270,15 @@ class DisharaApp {
         const grid = document.getElementById('categoryGrid');
         if (!grid) return;
 
+        if (!AppData.categories.length) {
+            grid.innerHTML = `<div class="empty-state"><span>No categories available yet.</span></div>`;
+            return;
+        }
+
         grid.innerHTML = AppData.categories.map((cat, i) => `
             <a href="pages/menu.html?category=${cat.name.toLowerCase()}" class="category-card stagger-item" style="animation-delay: ${i * 0.05}s">
                 <span class="category-emoji">${cat.emoji}</span>
                 <div class="category-name">${cat.name}</div>
-                <div class="category-count">${cat.count}+ items</div>
             </a>
         `).join('');
     }
@@ -283,7 +287,30 @@ class DisharaApp {
         const grid = document.getElementById('restaurantGrid');
         if (!grid) return;
 
+        // Merge saved user restaurant
+        const userRest = JSON.parse(localStorage.getItem('dishara_restaurant'));
+        if (userRest && !AppData.restaurants.find(r => r.id === userRest.id)) {
+            AppData.restaurants.push(userRest);
+        }
+
         const featured = AppData.restaurants.filter(r => r.featured).slice(0, 6);
+
+        if (!featured.length) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:4rem 1rem;">
+                    <div style="font-size:3.5rem; margin-bottom:1rem">🏦</div>
+                    <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Restaurants Yet</h3>
+                    <p style="color:var(--text-muted)">Be the first to list your restaurant on Dishara!</p>
+                    <a href="pages/register.html" class="btn btn-primary" style="margin-top:1.5rem; display:inline-flex">
+                        <i class="fas fa-plus"></i> List Your Restaurant
+                    </a>
+                </div>`;
+            // Hide the "View All" button
+            const cta = document.querySelector('.section-cta');
+            if (cta) cta.style.display = 'none';
+            return;
+        }
+
         grid.innerHTML = featured.map((r, i) => this.createRestaurantCard(r, i)).join('');
     }
 
@@ -321,7 +348,21 @@ class DisharaApp {
         const grid = document.getElementById('dishesCarousel');
         if (!grid) return;
 
-        const popular = AppData.menuItems.filter(d => d.popular).slice(0, 8);
+        // Merge user-added menu items
+        const userItems = JSON.parse(localStorage.getItem('dishara_user_menu')) || [];
+        const allItems = [...AppData.menuItems, ...userItems];
+        const popular = allItems.filter(d => d.popular).slice(0, 8);
+
+        if (!popular.length) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:4rem 1rem;">
+                    <div style="font-size:3.5rem; margin-bottom:1rem">🍽️</div>
+                    <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Dishes Available Yet</h3>
+                    <p style="color:var(--text-muted)">Restaurant owners can add dishes from the dashboard</p>
+                </div>`;
+            return;
+        }
+
         grid.innerHTML = popular.map((d, i) => this.createDishCard(d, i)).join('');
     }
 
@@ -355,6 +396,16 @@ class DisharaApp {
         const grid = document.getElementById('testimonialGrid');
         if (!grid) return;
 
+        if (!AppData.testimonials.length) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:4rem 1rem;">
+                    <div style="font-size:3.5rem; margin-bottom:1rem">💬</div>
+                    <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Reviews Yet</h3>
+                    <p style="color:var(--text-muted)">Be the first to order and share your experience!</p>
+                </div>`;
+            return;
+        }
+
         grid.innerHTML = AppData.testimonials.map((t, i) => `
             <div class="testimonial-card stagger-item" style="animation-delay: ${i * 0.1}s">
                 <i class="fas fa-quote-right testimonial-quote"></i>
@@ -373,7 +424,25 @@ class DisharaApp {
 
     // === Counter Animation ===
     setupCounters() {
+        // Set real counts from actual data
+        const userRest = JSON.parse(localStorage.getItem('dishara_restaurant'));
+        if (userRest && !AppData.restaurants.find(r => r.id === userRest.id)) AppData.restaurants.push(userRest);
+        const userItems = JSON.parse(localStorage.getItem('dishara_user_menu')) || [];
+        const totalOrders = (JSON.parse(localStorage.getItem('dishara_orders')) || []).length;
+
+        const realCounts = {
+            restaurants: AppData.restaurants.length,
+            customers: totalOrders,
+            orders: totalOrders
+        };
+
         const counters = document.querySelectorAll('[data-count]');
+        counters.forEach((el, idx) => {
+            const keys = ['restaurants', 'customers', 'orders'];
+            const val = realCounts[keys[idx]] || 0;
+            el.setAttribute('data-count', val);
+        });
+
         if (!counters.length) return;
 
         const observer = new IntersectionObserver((entries) => {
@@ -390,6 +459,10 @@ class DisharaApp {
 
     animateCounter(el) {
         const target = parseInt(el.getAttribute('data-count'));
+        if (target === 0) {
+            el.textContent = '0';
+            return;
+        }
         const duration = 2000;
         const step = target / (duration / 16);
         let current = 0;

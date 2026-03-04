@@ -22,8 +22,19 @@
 
     function renderRestaurants(restaurants) {
         if (restaurants.length === 0) {
-            grid.innerHTML = '';
-            if (noResults) noResults.classList.remove('hidden');
+            const isFiltered = searchInput?.value || cuisineFilter?.value || ratingFilter?.value;
+            grid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:5rem 1rem;">
+                    <div style="font-size:3.5rem; margin-bottom:1rem">${isFiltered ? '🔍' : '🏦'}</div>
+                    <h3 style="color:var(--text-primary); margin-bottom:0.5rem">
+                        ${isFiltered ? 'No restaurants match your search' : 'No Restaurants Listed Yet'}
+                    </h3>
+                    <p style="color:var(--text-muted)">
+                        ${isFiltered ? 'Try different filters or search terms' : 'Be the first to list your restaurant on Dishara!'}
+                    </p>
+                    ${!isFiltered ? `<a href="register.html" class="btn btn-primary" style="margin-top:1.5rem; display:inline-flex"><i class="fas fa-plus"></i> List Your Restaurant</a>` : ''}
+                </div>`;
+            if (noResults) noResults.classList.add('hidden');
             if (resultsCount) resultsCount.textContent = '0';
             return;
         }

@@ -33,12 +33,14 @@
 
         if (items.length === 0) {
             grid.innerHTML = `
-                <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 4rem;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">🍽️</div>
-                    <h3>No items found</h3>
-                    <p style="color: var(--text-secondary);">Try a different category</p>
-                </div>
-            `;
+                <div style="grid-column:1/-1; text-align:center; padding:5rem 1rem;">
+                    <div style="font-size:3.5rem; margin-bottom:1rem">🍽️</div>
+                    <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Dishes Available Yet</h3>
+                    <p style="color:var(--text-muted)">
+                        ${restaurantParam ? 'This restaurant has not added any dishes yet.' : 'No dishes have been added in this category yet.'}
+                    </p>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem">Restaurant owners can add dishes from the <a href="dashboard.html" style="color:var(--primary)">Dashboard</a></p>
+                </div>`;
             return;
         }
 

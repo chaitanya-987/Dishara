@@ -1,8 +1,37 @@
 /* ========================================
-   Dishara — Sample Data Store
+   Dishara — Data Store
    ======================================== */
 
 const AppData = {
+    categories: [
+        { id: 1, name: 'Burgers', emoji: '🍔' },
+        { id: 2, name: 'Pizza', emoji: '🍕' },
+        { id: 3, name: 'Sushi', emoji: '🍣' },
+        { id: 4, name: 'Pasta', emoji: '🍝' },
+        { id: 5, name: 'Indian', emoji: '🍛' },
+        { id: 6, name: 'Chinese', emoji: '🥡' },
+        { id: 7, name: 'Desserts', emoji: '🍰' },
+        { id: 8, name: 'Drinks', emoji: '🥤' },
+        { id: 9, name: 'Salads', emoji: '🥗' },
+        { id: 10, name: 'Tacos', emoji: '🌮' },
+    ],
+
+    // Restaurants are added by restaurant owners via the dashboard
+    restaurants: [],
+
+    // Menu items are added by restaurant owners via the dashboard
+    menuItems: [],
+
+    // Testimonials are submitted by real users
+    testimonials: [],
+
+    promoCodes: {
+        'WELCOME20': { discount: 20, type: 'percent', description: '20% off first order' },
+        'FLAT50': { discount: 50, type: 'flat', description: '$50 off' },
+        'DISHARA10': { discount: 10, type: 'percent', description: '10% off' },
+    }
+};
+
     categories: [
         { id: 1, name: 'Burgers', emoji: '🍔', count: 45 },
         { id: 2, name: 'Pizza', emoji: '🍕', count: 38 },
