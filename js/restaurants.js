@@ -36,7 +36,7 @@
                     <p style="color:var(--text-muted)">
                         ${isFiltered ? 'Try different filters or search terms' : 'Be the first to list your restaurant on Dishara!'}
                     </p>
-                    ${!isFiltered ? `<a href="login.html" class="btn btn-primary btn-list-restaurant" style="margin-top:1.5rem; display:inline-flex"><i class="fas fa-plus"></i> List Your Restaurant</a>` : ''}
+                    ${!isFiltered ? `<a href="${app.user ? 'dashboard.html' : 'login.html'}" class="btn btn-primary btn-list-restaurant" style="margin-top:1.5rem; display:inline-flex"><i class="fas fa-plus"></i> List Your Restaurant</a>` : ''}
                 </div>`;
             if (noResults) noResults.classList.add('hidden');
             if (resultsCount) resultsCount.textContent = '0';

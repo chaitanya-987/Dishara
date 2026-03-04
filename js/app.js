@@ -331,7 +331,7 @@ class DisharaApp {
                     <div style="font-size:3.5rem; margin-bottom:1rem">🏦</div>
                     <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Restaurants Yet</h3>
                     <p style="color:var(--text-muted)">Be the first to list your restaurant on Dishara!</p>
-                    <a href="pages/login.html" class="btn btn-primary btn-list-restaurant" style="margin-top:1.5rem; display:inline-flex">
+                    <a href="${this.user ? 'pages/dashboard.html' : 'pages/login.html'}" class="btn btn-primary btn-list-restaurant" style="margin-top:1.5rem; display:inline-flex">
                         <i class="fas fa-plus"></i> List Your Restaurant
                     </a>
                 </div>`;
