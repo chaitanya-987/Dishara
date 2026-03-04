@@ -13,12 +13,16 @@
 
     if (!grid) return;
 
-    // Combine default and user-added restaurants
-    let allRestaurants = [...AppData.restaurants];
-    const userRest = JSON.parse(localStorage.getItem('dishara_restaurant'));
-    if (userRest && !allRestaurants.find(r => r.id === userRest.id)) {
-        allRestaurants.push(userRest);
-    }
+    let allRestaurants = [];
+
+    // Show loading state
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem"><div style="font-size:2rem;margin-bottom:0.5rem">⏳</div><p style="color:var(--text-muted)">Loading restaurants...</p></div>`;
+
+    // Real-time listener from Firestore
+    DB.onRestaurants(restaurants => {
+        allRestaurants = restaurants;
+        filterAndSort();
+    });
 
     function renderRestaurants(restaurants) {
         if (restaurants.length === 0) {
@@ -97,7 +101,4 @@
     cuisineFilter?.addEventListener('change', filterAndSort);
     ratingFilter?.addEventListener('change', filterAndSort);
     sortFilter?.addEventListener('change', filterAndSort);
-
-    // Initial render
-    filterAndSort();
 })();

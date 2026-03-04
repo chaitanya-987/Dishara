@@ -189,7 +189,16 @@
                 customer: name,
                 address: address,
                 phone: phone,
-                payment: payment
+                payment: payment,
+                userId: app.user?.id || 'guest',
+                restaurantId: app.cart[0] ? String(app.cart[0].restaurantId || '') : ''
+            });
+
+            // Save to Firestore
+            DB.saveOrder(order).then(() => {
+                console.log('[Dishara] Order saved to Firestore:', order.id);
+            }).catch(err => {
+                console.warn('[Dishara] Firestore order save failed, stored locally:', err);
             });
 
             // Show success modal

@@ -26,12 +26,18 @@ class DisharaApp {
         this.setupCursorGlow();
 
         if (this.isHomePage) {
-            this.renderCategories();
-            this.renderFeaturedRestaurants();
-            this.renderPopularDishes();
-            this.renderTestimonials();
-            this.setupCounters();
-            this.setupNewsletter();
+            // Load live data from Firestore first, then render
+            Promise.all([
+                DB.getRestaurants().then(r => { AppData.restaurants = r; }).catch(() => {}),
+                DB.getMenuItems().then(m => { AppData.menuItems = m; }).catch(() => {})
+            ]).finally(() => {
+                this.renderCategories();
+                this.renderFeaturedRestaurants();
+                this.renderPopularDishes();
+                this.renderTestimonials();
+                this.setupCounters();
+                this.setupNewsletter();
+            });
         }
     }
 

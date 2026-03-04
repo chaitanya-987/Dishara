@@ -12,8 +12,10 @@
     <link rel="manifest" href="../manifest.json">
     <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
     <link rel="apple-touch-icon" href="../icons/icon.svg">
-    <title>Menu — Dishara</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Restaurants — Dishara</title>
+        <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script><link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/animations.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +25,7 @@
     <canvas id="particleCanvas"></canvas>
     <div class="cursor-glow" id="cursorGlow"></div>
 
+    <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="../index.html" class="nav-logo">
@@ -31,8 +34,8 @@
             </a>
             <div class="nav-links" id="navLinks">
                 <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="restaurants.html" class="nav-link"><i class="fas fa-store"></i><span>Restaurants</span></a>
-                <a href="menu.html" class="nav-link active"><i class="fas fa-book-open"></i><span>Menu</span></a>
+                <a href="restaurants.html" class="nav-link active"><i class="fas fa-store"></i><span>Restaurants</span></a>
+                <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
                 <a href="cart.html" class="nav-link cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
                 <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
             </div>
@@ -53,54 +56,75 @@
         </div>
     </nav>
 
+    <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <h1 class="page-title animate-fade-up">Our <span class="gradient-text">Menu</span></h1>
-            <p class="page-subtitle animate-fade-up delay-1">Explore delicious dishes from all restaurants</p>
+            <h1 class="page-title animate-fade-up">Explore <span class="gradient-text">Restaurants</span></h1>
+            <p class="page-subtitle animate-fade-up delay-1">Discover amazing restaurants near you</p>
         </div>
     </section>
 
-    <!-- Category Tabs -->
-    <section class="menu-page">
+    <!-- Filters -->
+    <section class="filters-section">
         <div class="container">
-            <div class="menu-tabs" id="menuTabs">
-                <button class="menu-tab active" data-category="all">
-                    <span class="tab-emoji">🍽️</span> All
-                </button>
-                <button class="menu-tab" data-category="burgers">
-                    <span class="tab-emoji">🍔</span> Burgers
-                </button>
-                <button class="menu-tab" data-category="pizza">
-                    <span class="tab-emoji">🍕</span> Pizza
-                </button>
-                <button class="menu-tab" data-category="sushi">
-                    <span class="tab-emoji">🍣</span> Sushi
-                </button>
-                <button class="menu-tab" data-category="pasta">
-                    <span class="tab-emoji">🍝</span> Pasta
-                </button>
-                <button class="menu-tab" data-category="indian">
-                    <span class="tab-emoji">🍛</span> Indian
-                </button>
-                <button class="menu-tab" data-category="chinese">
-                    <span class="tab-emoji">🥡</span> Chinese
-                </button>
-                <button class="menu-tab" data-category="desserts">
-                    <span class="tab-emoji">🍰</span> Desserts
-                </button>
-                <button class="menu-tab" data-category="drinks">
-                    <span class="tab-emoji">🥤</span> Drinks
-                </button>
+            <div class="filters-bar glass-card">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchRestaurants" placeholder="Search restaurants, cuisines...">
+                </div>
+                <div class="filter-group">
+                    <select id="cuisineFilter" class="filter-select">
+                        <option value="">All Cuisines</option>
+                        <option value="indian">Indian</option>
+                        <option value="italian">Italian</option>
+                        <option value="chinese">Chinese</option>
+                        <option value="japanese">Japanese</option>
+                        <option value="mexican">Mexican</option>
+                        <option value="american">American</option>
+                        <option value="thai">Thai</option>
+                        <option value="mediterranean">Mediterranean</option>
+                    </select>
+                    <select id="ratingFilter" class="filter-select">
+                        <option value="">All Ratings</option>
+                        <option value="4.5">4.5+ ⭐</option>
+                        <option value="4">4.0+ ⭐</option>
+                        <option value="3.5">3.5+ ⭐</option>
+                    </select>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="popular">Most Popular</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="delivery">Fastest Delivery</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="menu-grid" id="menuGrid">
-                <!-- Menu items injected by JS -->
+    <!-- Restaurant Grid -->
+    <section class="restaurants-page">
+        <div class="container">
+            <div class="results-count">
+                <span id="resultsCount">0</span> restaurants found
+            </div>
+            <div class="restaurant-grid large-grid" id="restaurantGrid">
+                <!-- Injected by JS -->
+            </div>
+            <div class="no-results hidden" id="noResults">
+                <div class="no-results-icon">🔍</div>
+                <h3>No restaurants found</h3>
+                <p>Try adjusting your filters or search terms</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
-        <div class="container"><div class="footer-bottom"><p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p></div></div>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p>
+            </div>
+        </div>
     </footer>
 
         <!-- Mobile Bottom Navigation (PWA) -->
@@ -131,10 +155,11 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="../js/data.js"></script>
+    <script src="../js/firebase.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/particles.js"></script>
     <script src="../js/animations.js"></script>
-    <script src="../js/menu.js"></script>
+    <script src="../js/restaurants.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

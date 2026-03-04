@@ -8,7 +8,25 @@
 
     if (!ordersListEl) return;
 
-    const orders = JSON.parse(localStorage.getItem('dishara_orders')) || [];
+    // Show loading
+    ordersListEl.innerHTML = `<div style="text-align:center;padding:3rem"><div style="font-size:2rem;margin-bottom:0.5rem">⏳</div><p style="color:var(--text-muted)">Loading orders...</p></div>`;
+    if (emptyOrders) emptyOrders.classList.add('hidden');
+
+    // Get user id
+    const userId = app.user?.id || null;
+
+    // Load from Firestore, fallback to localStorage
+    DB.getOrders(userId).then(firestoreOrders => {
+        const localOrders = JSON.parse(localStorage.getItem('dishara_orders')) || [];
+        // Merge: prefer Firestore, fill with local if empty
+        const orders = firestoreOrders.length ? firestoreOrders : localOrders;
+        renderOrders(orders);
+    }).catch(() => {
+        const orders = JSON.parse(localStorage.getItem('dishara_orders')) || [];
+        renderOrders(orders);
+    });
+
+    function renderOrders(orders) {
 
     if (orders.length === 0) {
         ordersListEl.innerHTML = '';
@@ -84,4 +102,5 @@
             </div>
         `;
     }).join('');
+    } // end renderOrders
 })();

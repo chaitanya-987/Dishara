@@ -13,10 +13,18 @@
     const categoryParam = params.get('category');
     const restaurantParam = params.get('restaurant');
 
-    // Combine all menu items (default + user added)
-    let allItems = [...AppData.menuItems];
-    const userItems = JSON.parse(localStorage.getItem('dishara_user_menu')) || [];
-    allItems = [...allItems, ...userItems];
+    let allItems = [];
+
+    // Show loading
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem"><div style="font-size:2rem;margin-bottom:0.5rem">⏳</div><p style="color:var(--text-muted)">Loading menu...</p></div>`;
+
+    // Real-time listener from Firestore
+    DB.onMenuItems(items => {
+        allItems = items;
+        // re-apply active tab
+        const activeTab = document.querySelector('.menu-tab.active');
+        renderMenu(activeTab ? activeTab.dataset.category : (categoryParam || 'all'));
+    }, restaurantParam ? parseInt(restaurantParam) : null);
 
     function renderMenu(category) {
         let items = allItems;
@@ -60,13 +68,8 @@
     if (categoryParam) {
         tabs.forEach(t => {
             t.classList.remove('active');
-            if (t.dataset.category === categoryParam) {
-                t.classList.add('active');
-            }
+            if (t.dataset.category === categoryParam) t.classList.add('active');
         });
-        renderMenu(categoryParam);
-    } else {
-        renderMenu('all');
     }
 
     // If restaurant param, show restaurant name

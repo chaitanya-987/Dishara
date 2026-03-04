@@ -68,8 +68,10 @@
             document.getElementById('restImage').value = app.userRestaurant.image || '';
         }
 
-        restaurantForm.addEventListener('submit', (e) => {
+        restaurantForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btn = restaurantForm.querySelector('button[type=submit]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
 
             const data = {
                 id: app.userRestaurant?.id || Date.now(),
@@ -84,12 +86,21 @@
                 rating: app.userRestaurant?.rating || 4.5,
                 reviews: app.userRestaurant?.reviews || 0,
                 emoji: getCuisineEmoji(document.getElementById('restCuisine').value),
-                featured: false,
-                popular: false
+                featured: true,
+                popular: true,
+                ownerId: app.user?.id || 'anonymous'
             };
 
-            app.saveRestaurant(data);
-            app.showToast('success', 'Restaurant Saved!', `${data.name} has been saved successfully`);
+            try {
+                await DB.saveRestaurant(data);
+                app.saveRestaurant(data);
+                app.showToast('success', 'Restaurant Saved!', `${data.name} is now live on Dishara!`);
+            } catch(err) {
+                console.error(err);
+                app.showToast('error', 'Save Failed', 'Could not save. Check your connection.');
+            }
+
+            if (btn) { btn.disabled = false; btn.textContent = 'Save Restaurant'; }
             updateStats();
         });
     }
@@ -127,7 +138,12 @@
             };
 
             const saved = app.addMenuItem(item);
-            app.showToast('success', 'Item Added!', `${item.name} added to your menu`);
+            DB.saveMenuItem(saved).then(() => {
+                app.showToast('success', 'Item Added!', `${item.name} is now live on Dishara!`);
+            }).catch(err => {
+                console.error(err);
+                app.showToast('warning', 'Saved Locally', 'Saved locally but cloud sync failed.');
+            });
             menuItemForm.reset();
             renderMenuItems();
             updateStats();
@@ -168,6 +184,7 @@
     window.deleteMenuItem = function(itemId) {
         if (confirm('Are you sure you want to delete this item?')) {
             app.deleteMenuItem(itemId);
+            DB.deleteMenuItem(itemId).catch(err => console.error('Firestore delete failed:', err));
             renderMenuItems();
             updateStats();
             app.showToast('info', 'Item Deleted', 'Menu item removed');
