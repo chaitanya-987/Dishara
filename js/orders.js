@@ -8,7 +8,7 @@
 
     if (!ordersListEl) return;
 
-    const orders = JSON.parse(localStorage.getItem('ck_orders')) || [];
+    const orders = JSON.parse(localStorage.getItem('dishara_orders')) || [];
 
     if (orders.length === 0) {
         ordersListEl.innerHTML = '';

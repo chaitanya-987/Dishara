@@ -4,12 +4,12 @@
 
 class DisharaApp {
     constructor() {
-        this.cart = JSON.parse(localStorage.getItem('ck_cart')) || [];
-        this.user = JSON.parse(localStorage.getItem('ck_user')) || null;
-        this.orders = JSON.parse(localStorage.getItem('ck_orders')) || [];
-        this.userRestaurant = JSON.parse(localStorage.getItem('ck_restaurant')) || null;
-        this.userMenuItems = JSON.parse(localStorage.getItem('ck_user_menu')) || [];
-        this.theme = localStorage.getItem('ck_theme') || 'dark';
+        this.cart = JSON.parse(localStorage.getItem('dishara_cart')) || [];
+        this.user = JSON.parse(localStorage.getItem('dishara_user')) || null;
+        this.orders = JSON.parse(localStorage.getItem('dishara_orders')) || [];
+        this.userRestaurant = JSON.parse(localStorage.getItem('dishara_restaurant')) || null;
+        this.userMenuItems = JSON.parse(localStorage.getItem('dishara_user_menu')) || [];
+        this.theme = localStorage.getItem('dishara_theme') || 'dark';
         this.isHomePage = document.getElementById('hero') !== null;
 
         this.init();
@@ -70,7 +70,7 @@ class DisharaApp {
         if (!btn) return;
         btn.addEventListener('click', () => {
             this.theme = this.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('ck_theme', this.theme);
+            localStorage.setItem('dishara_theme', this.theme);
             this.applyTheme();
         });
     }
@@ -142,14 +142,14 @@ class DisharaApp {
 
     login(userData) {
         this.user = userData;
-        localStorage.setItem('ck_user', JSON.stringify(userData));
+        localStorage.setItem('dishara_user', JSON.stringify(userData));
         this.setupUserUI();
         this.showToast('success', 'Welcome!', `Logged in as ${userData.name}`);
     }
 
     logout() {
         this.user = null;
-        localStorage.removeItem('ck_user');
+        localStorage.removeItem('dishara_user');
         this.setupUserUI();
         this.showToast('info', 'Logged Out', 'See you again soon!');
         setTimeout(() => {
@@ -159,7 +159,7 @@ class DisharaApp {
 
     register(userData) {
         this.user = userData;
-        localStorage.setItem('ck_user', JSON.stringify(userData));
+        localStorage.setItem('dishara_user', JSON.stringify(userData));
         this.showToast('success', 'Account Created!', 'Welcome to Dishara!');
     }
 
@@ -205,7 +205,7 @@ class DisharaApp {
     }
 
     saveCart() {
-        localStorage.setItem('ck_cart', JSON.stringify(this.cart));
+        localStorage.setItem('dishara_cart', JSON.stringify(this.cart));
     }
 
     updateCartBadge() {
@@ -231,7 +231,7 @@ class DisharaApp {
             payment: orderDetails.payment
         };
         this.orders.unshift(order);
-        localStorage.setItem('ck_orders', JSON.stringify(this.orders));
+        localStorage.setItem('dishara_orders', JSON.stringify(this.orders));
         this.clearCart();
         return order;
     }
@@ -239,7 +239,7 @@ class DisharaApp {
     // === Restaurant Management ===
     saveRestaurant(data) {
         this.userRestaurant = data;
-        localStorage.setItem('ck_restaurant', JSON.stringify(data));
+        localStorage.setItem('dishara_restaurant', JSON.stringify(data));
 
         // Also add to main restaurants if new
         const exists = AppData.restaurants.find(r => r.id === data.id);
@@ -253,7 +253,7 @@ class DisharaApp {
         item.restaurantId = this.userRestaurant?.id || 0;
         item.restaurant = this.userRestaurant?.name || 'My Restaurant';
         this.userMenuItems.push(item);
-        localStorage.setItem('ck_user_menu', JSON.stringify(this.userMenuItems));
+        localStorage.setItem('dishara_user_menu', JSON.stringify(this.userMenuItems));
 
         // Also add to global menu
         AppData.menuItems.push(item);
@@ -262,7 +262,7 @@ class DisharaApp {
 
     deleteMenuItem(itemId) {
         this.userMenuItems = this.userMenuItems.filter(i => i.id !== itemId);
-        localStorage.setItem('ck_user_menu', JSON.stringify(this.userMenuItems));
+        localStorage.setItem('dishara_user_menu', JSON.stringify(this.userMenuItems));
     }
 
     // === Render Home Page Sections ===

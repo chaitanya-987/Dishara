@@ -15,7 +15,7 @@
 
     // Combine all menu items (default + user added)
     let allItems = [...AppData.menuItems];
-    const userItems = JSON.parse(localStorage.getItem('ck_user_menu')) || [];
+    const userItems = JSON.parse(localStorage.getItem('dishara_user_menu')) || [];
     allItems = [...allItems, ...userItems];
 
     function renderMenu(category) {

@@ -15,7 +15,7 @@
 
     // Combine default and user-added restaurants
     let allRestaurants = [...AppData.restaurants];
-    const userRest = JSON.parse(localStorage.getItem('ck_restaurant'));
+    const userRest = JSON.parse(localStorage.getItem('dishara_restaurant'));
     if (userRest && !allRestaurants.find(r => r.id === userRest.id)) {
         allRestaurants.push(userRest);
     }
