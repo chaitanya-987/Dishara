@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Cart Page Logic
+   Dishara — Cart Page Logic
    ======================================== */
 
 (function() {

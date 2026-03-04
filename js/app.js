@@ -1,8 +1,8 @@
 /* ========================================
-   Kitchenova — Core Application Engine
+   Dishara — Core Application Engine
    ======================================== */
 
-class KitchenovaApp {
+class DisharaApp {
     constructor() {
         this.cart = JSON.parse(localStorage.getItem('ck_cart')) || [];
         this.user = JSON.parse(localStorage.getItem('ck_user')) || null;
@@ -160,7 +160,7 @@ class KitchenovaApp {
     register(userData) {
         this.user = userData;
         localStorage.setItem('ck_user', JSON.stringify(userData));
-        this.showToast('success', 'Account Created!', 'Welcome to Kitchenova!');
+        this.showToast('success', 'Account Created!', 'Welcome to Dishara!');
     }
 
     // === Cart ===
@@ -453,4 +453,4 @@ class KitchenovaApp {
 }
 
 // Initialize App
-const app = new KitchenovaApp();
+const app = new DisharaApp();

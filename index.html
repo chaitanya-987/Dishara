@@ -2,8 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchenova — Delicious Food, Delivered Fast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dishara — Delicious Food, Delivered Fast</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Order delicious food from top cloud kitchens near you. Fast delivery, great taste.">
+    <meta name="theme-color" content="#ff6b35">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dishara">
+    <meta name="application-name" content="Dishara">
+    <meta name="msapplication-TileColor" content="#ff6b35">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dishara — Delicious Food, Delivered Fast">
+    <meta property="og:description" content="Order delicious food from top cloud kitchens near you.">
+    <meta property="og:image" content="icons/icon.svg">
+
+    <!-- PWA Manifest & Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -98,7 +121,7 @@
             <div class="hero-content">
                 <div class="hero-badge animate-fade-up">
                     <i class="fas fa-fire"></i>
-                    <span>#1 Kitchenova Platform</span>
+                    <span>#1 Dishara Platform</span>
                 </div>
                 <h1 class="hero-title animate-fade-up delay-1">
                     Delicious Food,
@@ -286,7 +309,7 @@
             <div class="owner-cta-card">
                 <div class="owner-cta-content">
                     <span class="section-badge">👨‍🍳 For Restaurant Owners</span>
-                    <h2>Grow Your Business With <span class="gradient-text">Kitchenova</span></h2>
+                    <h2>Grow Your Business With <span class="gradient-text">Dishara</span></h2>
                     <p>Join 500+ restaurants already thriving on our platform. List your restaurant, manage orders, and reach thousands of new customers.</p>
                     <div class="owner-features">
                         <div class="owner-feature">
@@ -396,7 +419,7 @@
                         </div>
                         <span class="logo-text">Cloud<span class="logo-highlight">Kitchen</span></span>
                     </a>
-                    <p>The ultimate Kitchenova platform connecting food lovers with the best restaurants.</p>
+                    <p>The ultimate Dishara platform connecting food lovers with the best restaurants.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -422,11 +445,11 @@
                     <h4>Contact</h4>
                     <a href="#"><i class="fas fa-map-marker-alt"></i> 123 Food Street</a>
                     <a href="#"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
-                    <a href="#"><i class="fas fa-envelope"></i> hello@Kitchenova.com</a>
+                    <a href="#"><i class="fas fa-envelope"></i> hello@Dishara.com</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Kitchenova. All rights reserved. Made with ❤️</p>
+                <p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p>
             </div>
         </div>
     </footer>
@@ -434,10 +457,82 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- Mobile Bottom Navigation (PWA) -->
+    <nav class="mobile-bottom-nav">
+        <div class="nav-items">
+            <a href="../index.html" class="nav-item active">
+                <span><i class="fas fa-home"></i></span>
+                <span>Home</span>
+            </a>
+            <a href="pages/restaurants.html" class="nav-item">
+                <span><i class="fas fa-store"></i></span>
+                <span>Explore</span>
+            </a>
+            <a href="pages/menu.html" class="nav-item">
+                <span><i class="fas fa-utensils"></i></span>
+                <span>Menu</span>
+            </a>
+            <a href="pages/cart.html" class="nav-item">
+                <span><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="mobileCartBadge" style="display:none">0</span></span>
+                <span>Cart</span>
+            </a>
+            <a href="pages/orders.html" class="nav-item">
+                <span><i class="fas fa-receipt"></i></span>
+                <span>Orders</span>
+            </a>
+        </div>
+    </nav>
+
     <!-- Scripts -->
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script src="js/particles.js"></script>
     <script src="js/animations.js"></script>
+
+    <!-- PWA Service Worker & Install Prompt -->
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('[Dishara] SW registered:', reg.scope))
+            .catch(err => console.log('[Dishara] SW failed:', err));
+        });
+      }
+
+      // PWA Install Prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install banner after 3 seconds
+        setTimeout(() => showInstallBanner(), 3000);
+      });
+
+      function showInstallBanner() {
+        const banner = document.createElement('div');
+        banner.id = 'installBanner';
+        banner.innerHTML = `
+          <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#ff6b35,#7c3aed);color:white;padding:14px 24px;border-radius:50px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(255,107,53,0.4);z-index:9999;font-family:Poppins,sans-serif;font-size:14px;font-weight:600;cursor:pointer;animation:slideInUp 0.4s ease;">
+            <span style="font-size:22px">📱</span>
+            <span>Install Dishara App</span>
+            <button onclick="installPWA()" style="background:white;color:#ff6b35;border:none;padding:6px 16px;border-radius:20px;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;">Install</button>
+            <button onclick="document.getElementById('installBanner').remove()" style="background:transparent;color:white;border:none;font-size:18px;cursor:pointer;padding:0 4px;">✕</button>
+          </div>`;
+        document.body.appendChild(banner);
+      }
+
+      function installPWA() {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(choice => {
+            if (choice.outcome === 'accepted') console.log('[Dishara] PWA installed!');
+            deferredPrompt = null;
+            const banner = document.getElementById('installBanner');
+            if (banner) banner.remove();
+          });
+        }
+      }
+    </script>
 </body>
 </html>

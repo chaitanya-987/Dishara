@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Restaurants Page Logic
+   Dishara — Restaurants Page Logic
    ======================================== */
 
 (function() {

@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Auth (Login/Register) Logic
+   Dishara — Auth (Login/Register) Logic
    ======================================== */
 
 (function() {

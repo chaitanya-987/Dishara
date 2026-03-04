@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Particle System
+   Dishara — Particle System
    ======================================== */
 
 class ParticleSystem {

@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart — Kitchenova</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff6b35">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dishara">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
+    <link rel="apple-touch-icon" href="../icons/icon.svg">
+    <title>Cart — Dishara</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/animations.css">
     <link rel="stylesheet" href="../css/responsive.css">
@@ -173,9 +182,34 @@
     </div>
 
     <footer class="footer">
-        <div class="container"><div class="footer-bottom"><p>&copy; 2026 Kitchenova. All rights reserved. Made with ❤️</p></div></div>
+        <div class="container"><div class="footer-bottom"><p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p></div></div>
     </footer>
 
+        <!-- Mobile Bottom Navigation (PWA) -->
+    <nav class="mobile-bottom-nav">
+        <div class="nav-items">
+            <a href="../index.html" class="nav-item">
+                <span><i class="fas fa-home"></i></span>
+                <span>Home</span>
+            </a>
+            <a href="restaurants.html" class="nav-item">
+                <span><i class="fas fa-store"></i></span>
+                <span>Explore</span>
+            </a>
+            <a href="menu.html" class="nav-item">
+                <span><i class="fas fa-utensils"></i></span>
+                <span>Menu</span>
+            </a>
+            <a href="cart.html" class="nav-item">
+                <span><i class="fas fa-shopping-cart"></i></span>
+                <span>Cart</span>
+            </a>
+            <a href="orders.html" class="nav-item">
+                <span><i class="fas fa-receipt"></i></span>
+                <span>Orders</span>
+            </a>
+        </div>
+    </nav>
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="../js/data.js"></script>
@@ -183,5 +217,14 @@
     <script src="../js/particles.js"></script>
     <script src="../js/animations.js"></script>
     <script src="../js/cart.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('../sw.js')
+            .then(reg => console.log('[Dishara] SW registered:', reg.scope))
+            .catch(err => console.log('[Dishara] SW failed:', err));
+        });
+      }
+    </script>
 </body>
 </html>

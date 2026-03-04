@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Responsive Styles
+   Dishara — Responsive Styles
    ======================================== */
 
 /* Tablet */
@@ -299,5 +299,145 @@
     .cursor-glow,
     #particleCanvas {
         display: none;
+    }
+}
+
+/* ========================================
+   PWA & Mobile App Enhancements
+   ======================================== */
+
+/* Safe area for iPhone notch / Dynamic Island */
+body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* Prevent text resize on orientation change */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Smooth scrolling & touch optimizations */
+* {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Minimum touch target size (iOS HIG: 44pt, Android: 48dp) */
+button, a, .btn, .nav-link, .category-card, .menu-item-card {
+    min-height: 44px;
+}
+
+/* Bottom navigation bar for mobile PWA */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    z-index: 1000;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+}
+
+.mobile-bottom-nav .nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-bottom-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    min-width: 60px;
+}
+
+.mobile-bottom-nav .nav-item i {
+    font-size: 20px;
+}
+
+.mobile-bottom-nav .nav-item.active,
+.mobile-bottom-nav .nav-item:hover {
+    color: var(--primary);
+}
+
+.mobile-bottom-nav .nav-item .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.mobile-bottom-nav .nav-item span:first-child {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: block;
+    }
+
+    /* Push content above bottom nav */
+    body {
+        padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    }
+
+    /* Hide desktop navbar links on mobile when bottom nav is shown */
+    .nav-links {
+        display: none !important;
+    }
+
+    .nav-actions .btn {
+        display: none;
+    }
+
+    .nav-actions .cart-btn,
+    .nav-actions .theme-btn,
+    .nav-actions .user-menu {
+        display: flex !important;
+    }
+}
+
+/* PWA Standalone mode (when installed as app) */
+@media (display-mode: standalone) {
+    .navbar {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    /* Hide browser-specific UI hints */
+    .install-hint {
+        display: none;
+    }
+}
+
+/* iOS PWA status bar space */
+@supports (-webkit-touch-callout: none) {
+    .navbar {
+        padding-top: max(1rem, env(safe-area-inset-top));
     }
 }

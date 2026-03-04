@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Orders Page Logic
+   Dishara — Orders Page Logic
    ======================================== */
 
 (function() {

@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Menu Page Logic
+   Dishara — Menu Page Logic
    ======================================== */
 
 (function() {

@@ -1,5 +1,5 @@
 /* ========================================
-   Kitchenova — Scroll Animations
+   Dishara — Scroll Animations
    ======================================== */
 
 class ScrollAnimations {
