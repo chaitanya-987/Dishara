@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Cart Page Logic
+   Kitchenova — Cart Page Logic
    ======================================== */
 
 (function() {

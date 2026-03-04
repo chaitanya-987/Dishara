@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Particle System
+   Kitchenova — Particle System
    ======================================== */
 
 class ParticleSystem {

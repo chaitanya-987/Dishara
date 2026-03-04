@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Sample Data Store
+   Kitchenova — Sample Data Store
    ======================================== */
 
 const AppData = {
@@ -252,7 +252,7 @@ const AppData = {
             role: 'Food Enthusiast',
             avatar: '👩',
             rating: 5,
-            text: 'Cloud Kitchen has completely changed how I order food! The variety of restaurants is incredible, and the delivery is always on time. Absolutely love it!'
+            text: 'Kitchenova has completely changed how I order food! The variety of restaurants is incredible, and the delivery is always on time. Absolutely love it!'
         },
         {
             id: 2,
@@ -292,7 +292,7 @@ const AppData = {
             role: 'Food Blogger',
             avatar: '📸',
             rating: 5,
-            text: 'I discover new amazing restaurants every week through Cloud Kitchen. The curated collections and recommendations are spot on. A foodie\'s paradise!'
+            text: 'I discover new amazing restaurants every week through Kitchenova. The curated collections and recommendations are spot on. A foodie\'s paradise!'
         }
     ],
 

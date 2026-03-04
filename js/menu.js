@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Menu Page Logic
+   Kitchenova — Menu Page Logic
    ======================================== */
 
 (function() {

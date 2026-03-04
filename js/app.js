@@ -1,8 +1,8 @@
 /* ========================================
-   CLOUD KITCHEN — Core Application Engine
+   Kitchenova — Core Application Engine
    ======================================== */
 
-class CloudKitchenApp {
+class KitchenovaApp {
     constructor() {
         this.cart = JSON.parse(localStorage.getItem('ck_cart')) || [];
         this.user = JSON.parse(localStorage.getItem('ck_user')) || null;
@@ -160,7 +160,7 @@ class CloudKitchenApp {
     register(userData) {
         this.user = userData;
         localStorage.setItem('ck_user', JSON.stringify(userData));
-        this.showToast('success', 'Account Created!', 'Welcome to Cloud Kitchen!');
+        this.showToast('success', 'Account Created!', 'Welcome to Kitchenova!');
     }
 
     // === Cart ===
@@ -453,4 +453,4 @@ class CloudKitchenApp {
 }
 
 // Initialize App
-const app = new CloudKitchenApp();
+const app = new KitchenovaApp();

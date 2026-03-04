@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Auth (Login/Register) Logic
+   Kitchenova — Auth (Login/Register) Logic
    ======================================== */
 
 (function() {

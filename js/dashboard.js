@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Dashboard Page Logic
+   Kitchenova — Dashboard Page Logic
    ======================================== */
 
 (function() {

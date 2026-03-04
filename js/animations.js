@@ -1,5 +1,5 @@
 /* ========================================
-   CLOUD KITCHEN — Scroll Animations
+   Kitchenova — Scroll Animations
    ======================================== */
 
 class ScrollAnimations {
