@@ -1,173 +1,193 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#ff6b35">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Dishara">
-    <link rel="manifest" href="../manifest.json">
-    <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
-    <link rel="apple-touch-icon" href="../icons/icon.svg">
-    <title>Restaurants — Dishara</title>
-        <!-- Firebase CDN -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script><link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#ff6b35"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dishara">
+<link rel="manifest" href="../manifest.json"><link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
+<title>Cart  Dishara</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/animations.css"><link rel="stylesheet" href="../css/responsive.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.cart-layout{display:grid;grid-template-columns:1fr 380px;gap:2rem;align-items:start;padding:2rem 0 5rem}
+@media(max-width:900px){.cart-layout{grid-template-columns:1fr}}
+.cart-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:1.5rem}
+.cart-card h2{font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem}
+.cart-item{display:flex;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.cart-item:last-child{border-bottom:none}
+.cart-item-image{font-size:2rem;min-width:42px;text-align:center}
+.cart-item-details{flex:1}
+.cart-item-name{font-size:.92rem;font-weight:600;color:var(--text-primary);margin:0}
+.cart-item-restaurant{font-size:.78rem;color:var(--text-muted);margin:.15rem 0 .3rem}
+.cart-item-price{font-size:.88rem;font-weight:700;color:var(--primary)}
+.cart-item-actions{display:flex;align-items:center;gap:.6rem}
+.quantity-control{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.2rem .4rem}
+.qty-btn{width:26px;height:26px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:all .2s}
+.qty-btn:hover{background:rgba(255,107,53,.2);color:var(--primary)}
+.qty-value{font-size:.88rem;font-weight:600;color:var(--text-primary);min-width:20px;text-align:center}
+.cart-item-remove{width:30px;height:30px;background:rgba(239,68,68,.1);border:none;border-radius:8px;color:#ef4444;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.cart-item-remove:hover{background:rgba(239,68,68,.25)}
+.empty-cart-state{text-align:center;padding:3.5rem 1rem}
+.empty-cart-state .ec-icon{font-size:3.5rem;margin-bottom:1rem}
+.empty-cart-state h3{color:var(--text-primary);font-size:1.1rem;margin:0 0 .4rem}
+.empty-cart-state p{color:var(--text-muted);font-size:.88rem}
+.summary-item{display:flex;justify-content:space-between;font-size:.83rem;color:var(--text-secondary);padding:.3rem 0}
+.summary-divider{height:1px;background:rgba(255,255,255,.08);margin:.75rem 0}
+.summary-total{display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:var(--text-primary)}
+.summary-total span:last-child{color:var(--primary)}
+.promo-row{display:flex;gap:.5rem;margin:1rem 0}
+.promo-row input{flex:1;padding:.7rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text-primary);font-family:inherit;font-size:.85rem;outline:none}
+.promo-row input:focus{border-color:var(--primary)}
+.promo-row button{padding:.7rem 1rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text-secondary);font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
+.promo-row button:hover{border-color:var(--primary);color:var(--primary)}
+.discount-row{display:flex;justify-content:space-between;font-size:.83rem;color:#10b981;padding:.3rem 0}
+.checkout-form-inner{margin-top:1.25rem}
+.cf-group{margin-bottom:.9rem}
+.cf-group label{display:block;font-size:.78rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem}
+.cf-group input{width:100%;padding:.75rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text-primary);font-family:inherit;font-size:.88rem;outline:none;box-sizing:border-box}
+.cf-group input:focus{border-color:var(--primary)}
+.payment-options{display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem}
+.pay-option{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;cursor:pointer;font-size:.83rem;color:var(--text-secondary)}
+.pay-option input{accent-color:var(--primary)}
+.modal-overlay-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal-box{background:var(--bg-card);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:2.5rem 2rem;text-align:center;max-width:400px;width:100%}
+.modal-box .success-icon{font-size:3.5rem;margin-bottom:1rem}
+.modal-box h2{font-size:1.4rem;font-weight:800;color:var(--text-primary);margin:0 0 .5rem}
+.modal-box p{color:var(--text-secondary);font-size:.88rem;margin:0 0 1.5rem}
+.modal-box .order-id-badge{font-family:monospace;font-size:.85rem;background:rgba(255,107,53,.12);color:var(--primary);padding:.4rem .8rem;border-radius:8px;display:inline-block;margin-bottom:1.25rem}
+</style>
 </head>
 <body>
-    <canvas id="particleCanvas"></canvas>
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <div class="logo-icon"><i class="fas fa-cloud"></i><i class="fas fa-utensils logo-utensils"></i></div>
-                <span class="logo-text">Dish<span class="logo-highlight">ara</span></span>
-            </a>
-            <div class="nav-links" id="navLinks">
-                <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="restaurants.html" class="nav-link active"><i class="fas fa-store"></i><span>Restaurants</span></a>
-                <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
-                <a href="cart.html" class="nav-link cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
-                <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <a href="login.html" class="btn-nav-login" id="loginBtn"><i class="fas fa-user"></i><span>Login</span></a>
-                <div class="user-menu hidden" id="userMenu">
-                    <div class="user-avatar" id="userAvatar"><span>U</span></div>
-                    <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-header"><span id="userName">User</span><small id="userRole">Customer</small></div>
-                        <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
-                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </div>
-                </div>
-                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-            </div>
+<canvas id="particleCanvas"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-cloud"></i><i class="fas fa-utensils logo-utensils"></i></div>
+      <span class="logo-text">Dish<span class="logo-highlight">ara</span></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="restaurants.html" class="nav-link"><i class="fas fa-store"></i><span>Restaurants</span></a>
+      <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
+      <a href="cart.html" class="nav-link active cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
+      <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+      <a href="login.html" class="btn-nav-login" id="loginBtn"><i class="fas fa-user"></i><span>Login</span></a>
+      <div class="user-menu hidden" id="userMenu">
+        <div class="user-avatar" id="userAvatar"><span>U</span></div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header"><span id="userName">User</span><small id="userRole">Customer</small></div>
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
+          <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
-    </nav>
-
-    <!-- Page Hero -->
-    <section class="page-hero">
-        <div class="container">
-            <h1 class="page-title animate-fade-up">Explore <span class="gradient-text">Restaurants</span></h1>
-            <p class="page-subtitle animate-fade-up delay-1">Discover amazing restaurants near you</p>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<section class="page-hero">
+  <div class="container">
+    <h1 class="page-title animate-fade-up">Your <span class="gradient-text">Cart</span></h1>
+    <p class="page-subtitle animate-fade-up delay-1">Review your order before checkout</p>
+  </div>
+</section>
+<section>
+  <div class="container">
+    <div class="cart-layout">
+      <!-- Left: Cart Items -->
+      <div>
+        <div class="cart-card">
+          <h2><i class="fas fa-shopping-cart" style="color:var(--primary)"></i> Cart Items</h2>
+          <div id="cartItems"></div>
+          <div id="emptyCart" class="empty-cart-state hidden">
+            <div class="ec-icon"></div>
+            <h3>Your cart is empty</h3>
+            <p>Add delicious items from our menu to get started!</p>
+            <a href="menu.html" class="btn btn-primary" style="margin-top:1.25rem;display:inline-flex"><i class="fas fa-utensils"></i> Browse Menu</a>
+          </div>
         </div>
-    </section>
-
-    <!-- Filters -->
-    <section class="filters-section">
-        <div class="container">
-            <div class="filters-bar glass-card">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchRestaurants" placeholder="Search restaurants, cuisines...">
-                </div>
-                <div class="filter-group">
-                    <select id="cuisineFilter" class="filter-select">
-                        <option value="">All Cuisines</option>
-                        <option value="indian">Indian</option>
-                        <option value="italian">Italian</option>
-                        <option value="chinese">Chinese</option>
-                        <option value="japanese">Japanese</option>
-                        <option value="mexican">Mexican</option>
-                        <option value="american">American</option>
-                        <option value="thai">Thai</option>
-                        <option value="mediterranean">Mediterranean</option>
-                    </select>
-                    <select id="ratingFilter" class="filter-select">
-                        <option value="">All Ratings</option>
-                        <option value="4.5">4.5+ ⭐</option>
-                        <option value="4">4.0+ ⭐</option>
-                        <option value="3.5">3.5+ ⭐</option>
-                    </select>
-                    <select id="sortFilter" class="filter-select">
-                        <option value="popular">Most Popular</option>
-                        <option value="rating">Highest Rated</option>
-                        <option value="delivery">Fastest Delivery</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
-                    </select>
-                </div>
+        <!-- Checkout Form (hidden until Checkout clicked) -->
+        <div id="checkoutForm" class="cart-card hidden" style="margin-top:1.25rem">
+          <h2><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> Delivery Details</h2>
+          <div class="checkout-form-inner">
+            <div class="cf-group"><label>Full Name</label><input type="text" id="checkoutName" placeholder="Your name"></div>
+            <div class="cf-group"><label>Delivery Address</label><input type="text" id="checkoutAddress" placeholder="Street, City, State"></div>
+            <div class="cf-group"><label>Phone Number</label><input type="tel" id="checkoutPhone" placeholder="+1 555 0123"></div>
+            <div class="cf-group">
+              <label>Payment Method</label>
+              <div class="payment-options">
+                <label class="pay-option"><input type="radio" name="payment" value="card" checked> <i class="fas fa-credit-card"></i> Credit / Debit Card</label>
+                <label class="pay-option"><input type="radio" name="payment" value="upi"> <i class="fas fa-mobile-alt"></i> UPI / Digital Wallet</label>
+                <label class="pay-option"><input type="radio" name="payment" value="cod"> <i class="fas fa-money-bill-wave"></i> Cash on Delivery</label>
+              </div>
             </div>
+            <button id="placeOrderBtn" class="btn btn-primary" style="width:100%;margin-top:1rem;justify-content:center"><i class="fas fa-check-circle"></i> Place Order</button>
+          </div>
         </div>
-    </section>
-
-    <!-- Restaurant Grid -->
-    <section class="restaurants-page">
-        <div class="container">
-            <div class="results-count">
-                <span id="resultsCount">0</span> restaurants found
+      </div>
+      <!-- Right: Order Summary -->
+      <div id="orderSummary" style="display:none">
+        <div class="cart-card">
+          <h2><i class="fas fa-receipt" style="color:var(--primary)"></i> Order Summary</h2>
+          <div id="summaryItems"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-item"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+          <div class="summary-item"><span>Delivery Fee</span><span id="deliveryFee">$2.99</span></div>
+          <div class="summary-item"><span>Tax (8%)</span><span id="taxAmount">$0.00</span></div>
+          <div class="discount-row hidden" id="discountRow"><span> Discount</span><span id="discountAmount">-$0.00</span></div>
+          <div class="summary-divider"></div>
+          <div class="summary-total"><span>Total</span><span id="totalAmount">$0.00</span></div>
+          <!-- Promo -->
+          <div style="margin-top:1.25rem">
+            <div style="font-size:.78rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.4rem">Promo Code</div>
+            <div class="promo-row">
+              <input type="text" id="promoCode" placeholder="WELCOME20">
+              <button id="applyPromo">Apply</button>
             </div>
-            <div class="restaurant-grid large-grid" id="restaurantGrid">
-                <!-- Injected by JS -->
-            </div>
-            <div class="no-results hidden" id="noResults">
-                <div class="no-results-icon">🔍</div>
-                <h3>No restaurants found</h3>
-                <p>Try adjusting your filters or search terms</p>
-            </div>
+            <div style="font-size:.72rem;color:var(--text-muted)">Try: WELCOME20  FLAT50  DISHARA10</div>
+          </div>
+          <button id="checkoutBtn" class="btn btn-primary" style="width:100%;margin-top:1.25rem;justify-content:center"><i class="fas fa-arrow-right"></i> Proceed to Checkout</button>
         </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p>
-            </div>
-        </div>
-    </footer>
-
-        <!-- Mobile Bottom Navigation (PWA) -->
-    <nav class="mobile-bottom-nav">
-        <div class="nav-items">
-            <a href="../index.html" class="nav-item">
-                <span><i class="fas fa-home"></i></span>
-                <span>Home</span>
-            </a>
-            <a href="restaurants.html" class="nav-item">
-                <span><i class="fas fa-store"></i></span>
-                <span>Explore</span>
-            </a>
-            <a href="menu.html" class="nav-item">
-                <span><i class="fas fa-utensils"></i></span>
-                <span>Menu</span>
-            </a>
-            <a href="cart.html" class="nav-item">
-                <span><i class="fas fa-shopping-cart"></i></span>
-                <span>Cart</span>
-            </a>
-            <a href="orders.html" class="nav-item">
-                <span><i class="fas fa-receipt"></i></span>
-                <span>Orders</span>
-            </a>
-        </div>
-    </nav>
-    <div class="toast-container" id="toastContainer"></div>
-
-    <script src="../js/data.js"></script>
-    <script src="../js/firebase.js"></script>
-    <script src="../js/app.js"></script>
-    <script src="../js/particles.js"></script>
-    <script src="../js/animations.js"></script>
-    <script src="../js/restaurants.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('../sw.js')
-            .then(reg => console.log('[Dishara] SW registered:', reg.scope))
-            .catch(err => console.log('[Dishara] SW failed:', err));
-        });
-      }
-    </script>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Success Modal -->
+<div id="orderSuccessModal" class="hidden">
+  <div class="modal-overlay-bg modal-overlay">
+    <div class="modal-box animate-fade-up">
+      <div class="success-icon"></div>
+      <h2>Order Placed!</h2>
+      <p>Your order has been received and is being prepared.</p>
+      <div class="order-id-badge" id="orderId">ORD-XXXX</div>
+      <a href="orders.html" class="btn btn-primary" style="display:inline-flex;width:100%;justify-content:center"><i class="fas fa-receipt"></i> Track Your Order</a>
+    </div>
+  </div>
+</div>
+<nav class="mobile-bottom-nav">
+  <div class="nav-items">
+    <a href="../index.html" class="nav-item"><span><i class="fas fa-home"></i></span><span>Home</span></a>
+    <a href="restaurants.html" class="nav-item"><span><i class="fas fa-store"></i></span><span>Explore</span></a>
+    <a href="menu.html" class="nav-item"><span><i class="fas fa-utensils"></i></span><span>Menu</span></a>
+    <a href="cart.html" class="nav-item"><span><i class="fas fa-shopping-cart"></i></span><span>Cart</span></a>
+    <a href="orders.html" class="nav-item"><span><i class="fas fa-receipt"></i></span><span>Orders</span></a>
+  </div>
+</nav>
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/firebase.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/particles.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/cart.js"></script>
+<script>if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('../sw.js').catch(()=>{});});}</script>
 </body>
 </html>

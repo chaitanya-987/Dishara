@@ -1,173 +1,216 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#ff6b35">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Dishara">
-    <link rel="manifest" href="../manifest.json">
-    <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
-    <link rel="apple-touch-icon" href="../icons/icon.svg">
-    <title>Restaurants — Dishara</title>
-        <!-- Firebase CDN -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script><link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#ff6b35"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dishara">
+<link rel="manifest" href="../manifest.json"><link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
+<title>Dashboard  Dishara</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/animations.css"><link rel="stylesheet" href="../css/responsive.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.25rem;text-align:center}
+.stat-icon{font-size:1.8rem;margin-bottom:.4rem}
+.stat-value{font-size:1.75rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.78rem;color:var(--text-secondary);margin-top:.2rem}
+.dash-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:.5rem}
+.dash-tab{flex:1;min-width:120px;padding:.75rem 1rem;background:transparent;border:none;border-radius:12px;color:var(--text-secondary);font-size:.85rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center}
+.dash-tab.active{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.dash-tab i{margin-right:.35rem}
+.dash-tab-content{display:none}
+.dash-tab-content.active{display:block}
+.form-section{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:1.75rem;margin-bottom:1.5rem}
+.form-section h3{font-size:1rem;font-weight:700;color:var(--text-primary);margin:0 0 1.25rem}
+.form-section h3 i{color:var(--primary);margin-right:.4rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-full{grid-column:1/-1}
+.fg{display:flex;flex-direction:column;gap:.35rem}
+.fg label{font-size:.78rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{padding:.75rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text-primary);font-size:.88rem;font-family:inherit;outline:none;transition:border-color .2s;width:100%;box-sizing:border-box}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--primary)}
+.fg textarea{resize:vertical;min-height:75px}
+.checkbox-row{display:flex;gap:1.25rem;flex-wrap:wrap;padding:.25rem 0}
+.cb-item{display:flex;align-items:center;gap:.4rem;font-size:.83rem;color:var(--text-secondary);cursor:pointer}
+.cb-item input{width:15px;height:15px;accent-color:var(--primary);cursor:pointer}
+.menu-item-row{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:.5rem}
+.menu-item-emoji{font-size:1.5rem;min-width:32px;text-align:center}
+.menu-item-info{flex:1}
+.menu-item-info h4{font-size:.88rem;font-weight:600;color:var(--text-primary);margin:0}
+.menu-item-info p{font-size:.75rem;color:var(--text-muted);margin:.1rem 0 0}
+.menu-item-price{font-weight:700;color:var(--primary);white-space:nowrap;font-size:.9rem}
+.btn-icon{width:32px;height:32px;border-radius:8px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .2s}
+.btn-icon.delete{background:rgba(239,68,68,.12);color:#ef4444}
+.btn-icon.delete:hover{background:rgba(239,68,68,.25)}
+.empty-state-dash{text-align:center;padding:2.5rem 1rem;color:var(--text-muted)}
+.empty-state-dash i{font-size:2.5rem;margin-bottom:.75rem;opacity:.4;display:block}
+.order-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1rem;margin-bottom:.65rem}
+.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+.order-id{font-size:.75rem;font-weight:600;color:var(--text-muted);font-family:monospace}
+.order-status{font-size:.72rem;font-weight:700;padding:.2rem .65rem;border-radius:20px;text-transform:capitalize}
+.order-status.pending{background:rgba(245,158,11,.15);color:#f59e0b}
+.order-status.preparing{background:rgba(59,130,246,.15);color:#3b82f6}
+.order-status.delivered{background:rgba(16,185,129,.15);color:#10b981}
+.order-items-summary{font-size:.8rem;color:var(--text-secondary);margin:.2rem 0 .5rem}
+.order-footer{display:flex;justify-content:space-between;align-items:center}
+.order-total{font-weight:700;color:var(--primary);font-size:.88rem}
+.order-date{font-size:.72rem;color:var(--text-muted)}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-    <canvas id="particleCanvas"></canvas>
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <div class="logo-icon"><i class="fas fa-cloud"></i><i class="fas fa-utensils logo-utensils"></i></div>
-                <span class="logo-text">Dish<span class="logo-highlight">ara</span></span>
-            </a>
-            <div class="nav-links" id="navLinks">
-                <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="restaurants.html" class="nav-link active"><i class="fas fa-store"></i><span>Restaurants</span></a>
-                <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
-                <a href="cart.html" class="nav-link cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
-                <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <a href="login.html" class="btn-nav-login" id="loginBtn"><i class="fas fa-user"></i><span>Login</span></a>
-                <div class="user-menu hidden" id="userMenu">
-                    <div class="user-avatar" id="userAvatar"><span>U</span></div>
-                    <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-header"><span id="userName">User</span><small id="userRole">Customer</small></div>
-                        <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
-                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </div>
-                </div>
-                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-            </div>
+<canvas id="particleCanvas"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-cloud"></i><i class="fas fa-utensils logo-utensils"></i></div>
+      <span class="logo-text">Dish<span class="logo-highlight">ara</span></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="restaurants.html" class="nav-link"><i class="fas fa-store"></i><span>Restaurants</span></a>
+      <a href="menu.html" class="nav-link"><i class="fas fa-book-open"></i><span>Menu</span></a>
+      <a href="cart.html" class="nav-link cart-link"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="cart-badge" id="cartBadge">0</span></a>
+      <a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+      <a href="login.html" class="btn-nav-login" id="loginBtn"><i class="fas fa-user"></i><span>Login</span></a>
+      <div class="user-menu hidden" id="userMenu">
+        <div class="user-avatar" id="userAvatar"><span>U</span></div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header"><span id="userName">User</span><small id="userRole">Customer</small></div>
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a href="orders.html"><i class="fas fa-receipt"></i> My Orders</a>
+          <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
-    </nav>
-
-    <!-- Page Hero -->
-    <section class="page-hero">
-        <div class="container">
-            <h1 class="page-title animate-fade-up">Explore <span class="gradient-text">Restaurants</span></h1>
-            <p class="page-subtitle animate-fade-up delay-1">Discover amazing restaurants near you</p>
-        </div>
-    </section>
-
-    <!-- Filters -->
-    <section class="filters-section">
-        <div class="container">
-            <div class="filters-bar glass-card">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchRestaurants" placeholder="Search restaurants, cuisines...">
-                </div>
-                <div class="filter-group">
-                    <select id="cuisineFilter" class="filter-select">
-                        <option value="">All Cuisines</option>
-                        <option value="indian">Indian</option>
-                        <option value="italian">Italian</option>
-                        <option value="chinese">Chinese</option>
-                        <option value="japanese">Japanese</option>
-                        <option value="mexican">Mexican</option>
-                        <option value="american">American</option>
-                        <option value="thai">Thai</option>
-                        <option value="mediterranean">Mediterranean</option>
-                    </select>
-                    <select id="ratingFilter" class="filter-select">
-                        <option value="">All Ratings</option>
-                        <option value="4.5">4.5+ ⭐</option>
-                        <option value="4">4.0+ ⭐</option>
-                        <option value="3.5">3.5+ ⭐</option>
-                    </select>
-                    <select id="sortFilter" class="filter-select">
-                        <option value="popular">Most Popular</option>
-                        <option value="rating">Highest Rated</option>
-                        <option value="delivery">Fastest Delivery</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
-                    </select>
-                </div>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<section class="page-hero">
+  <div class="container">
+    <h1 class="page-title animate-fade-up">Restaurant <span class="gradient-text">Dashboard</span></h1>
+    <p class="page-subtitle animate-fade-up delay-1">Manage your restaurant, menu & orders</p>
+  </div>
+</section>
+<section style="padding:1.5rem 0 5rem">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="totalOrders">0</div><div class="stat-label">Total Orders</div></div>
+      <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="totalRevenue">$0</div><div class="stat-label">Revenue</div></div>
+      <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="totalItems">0</div><div class="stat-label">Menu Items</div></div>
+      <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="avgRating">4.5</div><div class="stat-label">Avg Rating</div></div>
+    </div>
+    <div class="dash-tabs">
+      <button class="dash-tab active" data-tab="restaurant"><i class="fas fa-store"></i> My Restaurant</button>
+      <button class="dash-tab" data-tab="menu"><i class="fas fa-utensils"></i> Menu Items</button>
+      <button class="dash-tab" data-tab="orders"><i class="fas fa-receipt"></i> Orders</button>
+    </div>
+    <div class="dash-tab-content active" id="tab-restaurant">
+      <div class="form-section">
+        <h3><i class="fas fa-store"></i> Restaurant Details</h3>
+        <form id="restaurantForm">
+          <div class="form-grid">
+            <div class="fg"><label>Restaurant Name</label><input type="text" id="restName" placeholder="e.g. Spice Garden" required></div>
+            <div class="fg"><label>Cuisine Type</label>
+              <select id="restCuisine" required>
+                <option value="">Select cuisine</option>
+                <option value="indian"> Indian</option>
+                <option value="italian"> Italian</option>
+                <option value="chinese"> Chinese</option>
+                <option value="japanese"> Japanese</option>
+                <option value="mexican"> Mexican</option>
+                <option value="american"> American</option>
+                <option value="thai"> Thai</option>
+                <option value="mediterranean"> Mediterranean</option>
+                <option value="multi"> Multi-cuisine</option>
+              </select>
             </div>
-        </div>
-    </section>
-
-    <!-- Restaurant Grid -->
-    <section class="restaurants-page">
-        <div class="container">
-            <div class="results-count">
-                <span id="resultsCount">0</span> restaurants found
+            <div class="fg"><label>Address</label><input type="text" id="restAddress" placeholder="123 Main St, City"></div>
+            <div class="fg"><label>Phone</label><input type="tel" id="restPhone" placeholder="+1 555 0123"></div>
+            <div class="fg"><label>Delivery Time (min)</label><input type="number" id="restDeliveryTime" placeholder="30" min="10" max="120"></div>
+            <div class="fg"><label>Minimum Order ($)</label><input type="number" id="restMinOrder" placeholder="10.00" min="0" step="0.50"></div>
+            <div class="fg form-full"><label>Description</label><textarea id="restDescription" placeholder="Tell customers about your restaurant..."></textarea></div>
+            <div class="fg form-full"><label>Cover Image URL (optional)</label><input type="url" id="restImage" placeholder="https://example.com/image.jpg"></div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:1.25rem;width:100%;justify-content:center"><i class="fas fa-save"></i> Save Restaurant</button>
+        </form>
+      </div>
+    </div>
+    <div class="dash-tab-content" id="tab-menu">
+      <div class="form-section">
+        <h3><i class="fas fa-plus-circle"></i> Add Menu Item</h3>
+        <form id="menuItemForm">
+          <div class="form-grid">
+            <div class="fg"><label>Item Name</label><input type="text" id="itemName" placeholder="e.g. Butter Chicken" required></div>
+            <div class="fg"><label>Category</label>
+              <select id="itemCategory" required>
+                <option value="">Select category</option>
+                <option value="starters">Starters</option>
+                <option value="mains">Main Course</option>
+                <option value="rice">Rice &amp; Biryani</option>
+                <option value="breads">Breads</option>
+                <option value="desserts">Desserts</option>
+                <option value="drinks">Drinks</option>
+                <option value="pizza">Pizza</option>
+                <option value="burgers">Burgers</option>
+                <option value="sushi">Sushi</option>
+                <option value="salads">Salads</option>
+              </select>
             </div>
-            <div class="restaurant-grid large-grid" id="restaurantGrid">
-                <!-- Injected by JS -->
+            <div class="fg"><label>Price ($)</label><input type="number" id="itemPrice" placeholder="12.99" min="0" step="0.01" required></div>
+            <div class="fg"><label>Emoji</label><input type="text" id="itemEmoji" placeholder="" maxlength="4"></div>
+            <div class="fg form-full"><label>Description</label><textarea id="itemDescription" placeholder="Describe the dish..." style="min-height:60px"></textarea></div>
+            <div class="fg form-full"><label>Image URL (optional)</label><input type="url" id="itemImage" placeholder="https://example.com/dish.jpg"></div>
+            <div class="fg form-full"><label>Tags</label>
+              <div class="checkbox-row">
+                <label class="cb-item"><input type="checkbox" id="itemVeg">  Vegetarian</label>
+                <label class="cb-item"><input type="checkbox" id="itemSpicy">  Spicy</label>
+                <label class="cb-item"><input type="checkbox" id="itemPopular">  Popular</label>
+              </div>
             </div>
-            <div class="no-results hidden" id="noResults">
-                <div class="no-results-icon">🔍</div>
-                <h3>No restaurants found</h3>
-                <p>Try adjusting your filters or search terms</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2026 Dishara. All rights reserved. Made with ❤️</p>
-            </div>
-        </div>
-    </footer>
-
-        <!-- Mobile Bottom Navigation (PWA) -->
-    <nav class="mobile-bottom-nav">
-        <div class="nav-items">
-            <a href="../index.html" class="nav-item">
-                <span><i class="fas fa-home"></i></span>
-                <span>Home</span>
-            </a>
-            <a href="restaurants.html" class="nav-item">
-                <span><i class="fas fa-store"></i></span>
-                <span>Explore</span>
-            </a>
-            <a href="menu.html" class="nav-item">
-                <span><i class="fas fa-utensils"></i></span>
-                <span>Menu</span>
-            </a>
-            <a href="cart.html" class="nav-item">
-                <span><i class="fas fa-shopping-cart"></i></span>
-                <span>Cart</span>
-            </a>
-            <a href="orders.html" class="nav-item">
-                <span><i class="fas fa-receipt"></i></span>
-                <span>Orders</span>
-            </a>
-        </div>
-    </nav>
-    <div class="toast-container" id="toastContainer"></div>
-
-    <script src="../js/data.js"></script>
-    <script src="../js/firebase.js"></script>
-    <script src="../js/app.js"></script>
-    <script src="../js/particles.js"></script>
-    <script src="../js/animations.js"></script>
-    <script src="../js/restaurants.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('../sw.js')
-            .then(reg => console.log('[Dishara] SW registered:', reg.scope))
-            .catch(err => console.log('[Dishara] SW failed:', err));
-        });
-      }
-    </script>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:1.25rem;width:100%;justify-content:center"><i class="fas fa-plus"></i> Add to Menu</button>
+        </form>
+      </div>
+      <div class="form-section">
+        <h3><i class="fas fa-list"></i> Your Menu</h3>
+        <div id="menuItemsList"></div>
+        <div id="emptyMenu" class="empty-state-dash hidden"><i class="fas fa-utensils"></i><p>No menu items yet. Add your first dish above!</p></div>
+      </div>
+    </div>
+    <div class="dash-tab-content" id="tab-orders">
+      <div class="form-section">
+        <h3><i class="fas fa-receipt"></i> Incoming Orders</h3>
+        <div id="ordersList"></div>
+        <div id="emptyOrders" class="empty-state-dash hidden"><i class="fas fa-box-open"></i><p>No orders yet. They will appear here when customers order from you.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<nav class="mobile-bottom-nav">
+  <div class="nav-items">
+    <a href="../index.html" class="nav-item"><span><i class="fas fa-home"></i></span><span>Home</span></a>
+    <a href="restaurants.html" class="nav-item"><span><i class="fas fa-store"></i></span><span>Explore</span></a>
+    <a href="menu.html" class="nav-item"><span><i class="fas fa-utensils"></i></span><span>Menu</span></a>
+    <a href="cart.html" class="nav-item"><span><i class="fas fa-shopping-cart"></i></span><span>Cart</span></a>
+    <a href="orders.html" class="nav-item"><span><i class="fas fa-receipt"></i></span><span>Orders</span></a>
+  </div>
+</nav>
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/firebase.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/particles.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/dashboard.js"></script>
+<script>if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('../sw.js').catch(()=>{});});}</script>
 </body>
 </html>
