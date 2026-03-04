@@ -128,15 +128,21 @@ class DisharaApp {
         const userRole = document.getElementById('userRole');
         const logoutBtn = document.getElementById('logoutBtn');
 
+        const isSubPage = window.location.pathname.includes('/pages/');
+        const dashboardHref = isSubPage ? 'dashboard.html' : 'pages/dashboard.html';
+        const loginHref = isSubPage ? 'login.html' : 'pages/login.html';
+
         if (this.user) {
             if (loginBtn) loginBtn.classList.add('hidden');
             if (userMenu) userMenu.classList.remove('hidden');
             if (userAvatar) userAvatar.querySelector('span').textContent = this.user.name.charAt(0).toUpperCase();
             if (userName) userName.textContent = this.user.name;
             if (userRole) userRole.textContent = this.user.role;
+            document.querySelectorAll('.btn-list-restaurant').forEach(btn => btn.href = dashboardHref);
         } else {
             if (loginBtn) loginBtn.classList.remove('hidden');
             if (userMenu) userMenu.classList.add('hidden');
+            document.querySelectorAll('.btn-list-restaurant').forEach(btn => btn.href = loginHref);
         }
 
         if (logoutBtn) {
@@ -325,7 +331,7 @@ class DisharaApp {
                     <div style="font-size:3.5rem; margin-bottom:1rem">🏦</div>
                     <h3 style="color:var(--text-primary); margin-bottom:0.5rem">No Restaurants Yet</h3>
                     <p style="color:var(--text-muted)">Be the first to list your restaurant on Dishara!</p>
-                    <a href="pages/dashboard.html" onclick="event.preventDefault(); app.goToListRestaurant()" class="btn btn-primary" style="margin-top:1.5rem; display:inline-flex">
+                    <a href="pages/login.html" class="btn btn-primary btn-list-restaurant" style="margin-top:1.5rem; display:inline-flex">
                         <i class="fas fa-plus"></i> List Your Restaurant
                     </a>
                 </div>`;
